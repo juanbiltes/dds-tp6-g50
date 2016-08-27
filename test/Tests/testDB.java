@@ -9,6 +9,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
+import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.transaction.Transaction;
 
 import Clases.Articulo;
 import Clases.ArticuloStock;
@@ -19,7 +25,9 @@ import Clases.Pedido;
 import Clases.Planificador;
 
 
-public class testPlanificadorDePedidos {
+public class testDB  extends AbstractPersistenceTest implements WithGlobalEntityManager {
+	
+
 	
 	Cliente pepe = new Cliente(0);
 	Cliente pepita = new Cliente(1);
@@ -103,7 +111,4 @@ public class testPlanificadorDePedidos {
 		
 		assertTrue(idPedido == pedidoDePepe.getIDPedido());
 	}
-	
-	
 }
-

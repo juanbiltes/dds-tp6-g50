@@ -2,11 +2,17 @@ package Clases;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
 public class DimensionArticulo {
 	
 	private Double diametro;
 	private Double largo;
 	private Double ancho;
+	
+	public DimensionArticulo() {};
 	
 	public DimensionArticulo(Double diametro, Double largo, Double ancho) {
 		this.diametro = diametro;

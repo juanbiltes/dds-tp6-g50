@@ -2,47 +2,44 @@ package Clases;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="articulos")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
 public class Articulo {
+	
+	@Id @GeneratedValue
 	private int idArticulo;
-	private DimensionArticulo dimensionesMaximas;
-	private int cantRequeridaDelArticuloParaEntregar;
-	private List<String> envasesDisponibles = new ArrayList<String>();
-	private String envaseSeleccionado;
 	
-	private String nombreArticulo;
+	private String tipoArticulo; // Seria el nombre...
 	
-	public Articulo(int idArt, 
-					String nombreArticulo,
-					DimensionArticulo dimensiones,
-					List<String> envasesDisponibles) {
-		// Constructor para la Empresa
-		this.idArticulo = idArt;
-		this.nombreArticulo = nombreArticulo;
-		this.dimensionesMaximas = dimensiones;
-		this.envasesDisponibles = envasesDisponibles;
+	@OneToOne
+	private DimensionArticulo dimensionArticulo;	
+	
+	public Articulo() {};
+	
+	public Articulo(String tipoArticulo2, DimensionArticulo dimensiones) {
+		this.tipoArticulo = tipoArticulo2;
+		this.dimensionArticulo = dimensiones;
 	}
 	
-	public void cantidadRequeridaParaEntregar(int cantidadDelArticulo) {
-		this.cantRequeridaDelArticuloParaEntregar = cantidadDelArticulo;
-	}
 	
-	public List<String> getEnvasesDisponibles() {
-		return envasesDisponibles;
+	protected void setId(int id) {
+		this.idArticulo = id;
 	}
 
-	public void seleccionarEnvase(int indiceItemSeleccionado) {
-		this.envaseSeleccionado = envasesDisponibles.get(indiceItemSeleccionado);
+	public List<Envase> getEnvasesDisponibles() {
+		return null;
 	}
-	
-	public void seleccionarEnvase(String nombreEnvaseSeleccionado) {
-		// Solamente seleccionamos el envase si coincide con algunos de los que indico la empresa
-		this.envasesDisponibles.forEach( envase -> {
-				if(envase.toLowerCase() == nombreEnvaseSeleccionado.toLowerCase()) {
-					this.envaseSeleccionado = envase;
-				} else { 
-					throw new IllegalArgumentException("Envase Invalido, consulte la lista e ingrese el numero del item o su nombre tal cual lo informa el sistema");
-				};	
-		});
-	}
-	
+
+		
 }

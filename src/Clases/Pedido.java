@@ -2,18 +2,30 @@ package Clases;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "pedido")
 public class Pedido {
 	
+	@Id @GeneratedValue
 	private int idPedido = 0;
-	private LocalDateTime fecha_primera_entrega;
+	
+	private FechasDeEntrega fechasEntregas = new FechasDeEntrega();
+
 	private int totalDeEntregasARealizar;
+	
 	private String periodicidad;
-	private List<Articulo> articulosAPedir = new ArrayList<Articulo>();
+	
+	private List<Articulo> articulosSolicitados = new ArrayList<Articulo>();
 	
 	public Pedido setFechaDePrimeraEntrega(LocalDateTime fechaIndicadaPorUsuario) {
-		this.fecha_primera_entrega = fechaIndicadaPorUsuario;
+		this.fechasEntregas.setFechaInicial(fechaIndicadaPorUsuario);
 		return this;
 	}
 	
@@ -23,16 +35,29 @@ public class Pedido {
 	}
 	
 	public Pedido setPeriodicidad(String periodicidad) {
-		if(periodicidad == "unico" || periodicidad == "semanal" || periodicidad == "mensual") {
+		int totalEntregasARealizar = totalDeEntregasARealizar;
+		
+		switch (periodicidad) {
+		case "unico":
 			this.periodicidad = periodicidad;
-		} else {
+			fechasEntregas.unicaEntrega();
+			break;
+		case "semanal":
+			this.periodicidad = periodicidad;
+			fechasEntregas.entregasSemanales(totalEntregasARealizar);
+			break;
+		case "mensual":
+			this.periodicidad = periodicidad;
+			fechasEntregas.entregasMensuales(totalEntregasARealizar);
+			break;
+		default:
 			throw new IllegalArgumentException("Periodicidad Invalida, opciones: unico, semanal o mensual");
 		}
 		return this;
 	}
 	
 	public Pedido agregarArticulo(Articulo articuloIndicadoPorUsuario) {
-		this.articulosAPedir.add(articuloIndicadoPorUsuario);
+		this.articulosSolicitados.add(articuloIndicadoPorUsuario);
 		return this;
 	}
 	
