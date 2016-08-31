@@ -29,6 +29,8 @@ public class Pedido {
 
 	private int totalDeEntregasARealizar = 0;
 	
+	private DimensionArticulo dimensionesTolerables;
+	
 	private String periodicidad;
 	
 	@OneToMany
@@ -39,12 +41,18 @@ public class Pedido {
 		return this;
 	}
 	
+	public Pedido setToleranciaDeDimensiones(Double diametro, Double largo, Double ancho) {
+		this.dimensionesTolerables = new DimensionArticulo(diametro, largo, ancho);
+		return this;
+	}
+	
 	public Pedido setTotalDeEntregasARealizar(int totalIndicadoPorUsuario) {
 		this.totalDeEntregasARealizar = totalIndicadoPorUsuario;
 		return this;
 	}
 	
 	public Pedido setPeriodicidad(String periodicidad) {
+		if(totalDeEntregasARealizar == 0) throw new IllegalComponentStateException("Por favor, indique cuantas entregas realizara antes de elegir la periodicidad");
 		int totalEntregasARealizar = totalDeEntregasARealizar;
 		
 		switch (periodicidad) {
@@ -67,11 +75,13 @@ public class Pedido {
 	}
 	
 	public Pedido agregarArticulo(Articulo articuloIndicadoPorUsuario, Envase envaseArticulo) {
+		if(this.dimensionesTolerables == null) throw new IllegalStateException("Por favor, primero indique las dimensiones maximas que tolerara para las entregas");
 		if(articuloIndicadoPorUsuario.tieneEnvase(envaseArticulo)) {
-		ArticuloSolicitado articuloSolicitado = new ArticuloSolicitado(articuloIndicadoPorUsuario);
-		articuloSolicitado.seleccionarEnvase(envaseArticulo);
-		this.articulosSolicitados.add(articuloSolicitado);
-		return this;
+			if(!articuloIndicadoPorUsuario.getDimensiones().esMenorQue(this.dimensionesTolerables)) throw new IllegalArgumentException("Las dimensiones del articulo elegido exceden las que se han elegido como tolerables");
+			ArticuloSolicitado articuloSolicitado = new ArticuloSolicitado(articuloIndicadoPorUsuario);
+			articuloSolicitado.seleccionarEnvase(envaseArticulo);
+			this.articulosSolicitados.add(articuloSolicitado);
+			return this;
 		} else {
 			throw new IllegalArgumentException("Este articulo no viene en el envase seleccionado");
 		}
@@ -118,11 +128,6 @@ public class Pedido {
 
 	public void setID(int idIndicadoPorElPlanificador) {
 		this.idPedido = idIndicadoPorElPlanificador;
-	}
-	
-	
-	public void setFechaInicial(LocalDateTime fecha) {
-		this.fechaInicial = new FechaEntrega(fecha);
 	}
 	
 	

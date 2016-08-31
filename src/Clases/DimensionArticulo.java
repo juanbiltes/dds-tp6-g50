@@ -31,7 +31,26 @@ public class DimensionArticulo {
 		lista.add(largo);
 		lista.add(ancho);
 		return lista;
-		
+	}
+	
+	public boolean esMenorQue(DimensionArticulo articuloAComparar) {
+		return ( this.ancho <= articuloAComparar.getAncho() &&
+				 this.diametro <= articuloAComparar.getDiametro() &&
+				 this.largo <= articuloAComparar.getLargo());
+	}
+	
+	// Getters & Setters
+
+	private Double getLargo() {
+		return this.largo;
+	}
+
+	private Double getDiametro() {
+		return this.diametro;
+	}
+
+	private Double getAncho() {
+		return this.ancho;
 	}
 
 	public int getId() {

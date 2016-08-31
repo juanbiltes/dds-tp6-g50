@@ -67,7 +67,9 @@ public class testPlanificadorDePedidos {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testSeIngresaMalLaPeriodicidad() throws Exception {
-		pedidoDePepe.setPeriodicidad("todas las semanas");
+		pedidoDePepe.setToleranciaDeDimensiones(500.0, 500.0, 500.0)
+					.setTotalDeEntregasARealizar(4)
+					.setPeriodicidad("todas las semanas");
 	}
 	
 	@Test
@@ -82,26 +84,29 @@ public class testPlanificadorDePedidos {
 	
 	@Test(expected=IllegalComponentStateException.class)
 	public void testExcepcionPorNoDefinirFechaInicial() throws Exception {
-		pedidoDePepe.agregarArticulo(jabonDeAcero, envasesJabon.get(0))
+		pedidoDePepe.setToleranciaDeDimensiones(500.0, 500.0, 500.0)
+					.agregarArticulo(jabonDeAcero, envasesJabon.get(0))
 					.agregarArticulo(metalAnguloso, envasesMetalAnguloso.get(0))
 					.setPeriodicidad("mensual");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testSeAgregaUnArticuloConUnEnvaseInvalido() throws Exception {
-		pedidoDePepe.agregarArticulo(jabonDeAcero, new Envase(400))
+		pedidoDePepe.setToleranciaDeDimensiones(500.0, 500.0, 500.0)
+					.agregarArticulo(jabonDeAcero, new Envase(400))
 					.setFechaDePrimeraEntrega(LocalDateTime.now().plusDays(2))
-					.setPeriodicidad("mensual")
-					.setTotalDeEntregasARealizar(4);
+					.setTotalDeEntregasARealizar(4)
+					.setPeriodicidad("mensual");
 	}
 	
 	@Test
 	public void testElSistemaAsignaElIDAlPedido() throws Exception {
-		pedidoDePepe.agregarArticulo(jabonDeAcero, envasesJabon.get(0))
+		pedidoDePepe.setToleranciaDeDimensiones(500.0, 500.0, 500.0)
+					.agregarArticulo(jabonDeAcero, envasesJabon.get(0))
 					.agregarArticulo(metalAnguloso, envasesMetalAnguloso.get(0))
 					.setFechaDePrimeraEntrega(LocalDateTime.now().plusDays(2))
-					.setPeriodicidad("mensual")
-					.setTotalDeEntregasARealizar(4);
+					.setTotalDeEntregasARealizar(4)
+					.setPeriodicidad("mensual");
 		
 		assertEquals(0,pedidoDePepe.getIDPedido());
 		
