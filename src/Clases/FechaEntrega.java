@@ -6,7 +6,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -15,7 +18,9 @@ import javax.persistence.Transient;
 @Table
 public class FechaEntrega {
 
-	@Id
+	@Id @GeneratedValue
+	private int id;
+	
 	private LocalDateTime fecha;
 	
 	@OneToOne
@@ -51,16 +56,8 @@ public class FechaEntrega {
 	}
 
 	public int getId() {
-		return this.getId();
+		return this.id;
 	}
-	
-	
-	////////////
-	////////////
-	////////////
-
-	
-
 	
 
 }

@@ -34,11 +34,6 @@ public class Cliente {
 		this.pedidoRealizado = pedido;
 	}
 	
-	public void setID(int idAsignadoPorElSistema) {
-		this.idCliente = idAsignadoPorElSistema;
-	}
-	
-	
 	public int getUserID() {
 		return this.idCliente;
 	}

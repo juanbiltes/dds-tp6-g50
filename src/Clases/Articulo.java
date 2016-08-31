@@ -20,7 +20,7 @@ public class Articulo {
 	@Id @GeneratedValue
 	private int idArticulo;
 	
-	@Embedded
+	@OneToMany
 	private List<Envase> envasesDisponibles = new ArrayList<Envase>();
 	
 	private String tipoArticulo; // Seria el nombre...

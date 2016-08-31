@@ -18,7 +18,6 @@ import javax.persistence.EntityTransaction;
 import javax.transaction.Transaction;
 
 import Clases.Articulo;
-import Clases.ArticuloStock;
 import Clases.Cliente;
 import Clases.DimensionArticulo;
 import Clases.Envase;
@@ -69,8 +68,8 @@ public class testDB  extends AbstractPersistenceTest implements WithGlobalEntity
 		envasesMetalAnguloso.add(new Envase(300));
 		envasesMetalAnguloso.add(new Envase(400));
 		
-		jabonDeAcero = new ArticuloStock("Jabon de Acero", dimensionJabon, envasesJabon);
-		metalAnguloso = new ArticuloStock("Metal Anguloso", dimensionJabon, envasesJabon);
+		jabonDeAcero = new Articulo("Jabon de Acero", dimensionJabon, envasesJabon);
+		metalAnguloso = new Articulo("Metal Anguloso", dimensionJabon, envasesJabon);
 		
 		planificador.agregarArticuloAStock(jabonDeAcero);
 		planificador.agregarArticuloAStock(metalAnguloso);
@@ -174,9 +173,9 @@ public class testDB  extends AbstractPersistenceTest implements WithGlobalEntity
 	}
 	
 	//@Test
-	public void getArticulo() {
+	public void persistArticulo() {
 		EntityManager entityManager = PerThreadEntityManagers.getEntityManager();
-		Articulo jabonDeAcero = new ArticuloStock("Jabon de Acero", dimensionJabon, envasesJabon);
+		Articulo jabonDeAcero = new Articulo("Jabon de Acero", dimensionJabon, envasesJabon);
 		
 		EntityTransaction tx = entityManager.getTransaction();
 		

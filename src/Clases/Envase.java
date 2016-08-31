@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Embeddable
 @Entity
 @Table(name = "envase")
 public class Envase {
