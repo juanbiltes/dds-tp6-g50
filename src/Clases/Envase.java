@@ -1,10 +1,13 @@
 package Clases;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@Embeddable
 @Entity
 @Table(name = "envase")
 public class Envase {
@@ -26,6 +29,10 @@ public class Envase {
 	
 	public int getCapacidad() {
 		return this.capacidad;
+	}
+
+	public int getId() {
+		return this.idEnvase;
 	}
 	
 }

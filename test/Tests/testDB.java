@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.uqbarproject.jpa.java8.extras.PerThreadEntityManagers;
 import org.uqbarproject.jpa.java8.extras.WithGlobalEntityManager;
 import org.uqbarproject.jpa.java8.extras.test.AbstractPersistenceTest;
 
@@ -21,11 +22,22 @@ import Clases.ArticuloStock;
 import Clases.Cliente;
 import Clases.DimensionArticulo;
 import Clases.Envase;
+import Clases.FechaEntrega;
 import Clases.Pedido;
 import Clases.Planificador;
 
 
 public class testDB  extends AbstractPersistenceTest implements WithGlobalEntityManager {
+	
+	@Test
+	public void contextUp() {
+		assertNotNull(entityManager());
+	}
+	
+	@Test
+	public void contextUpWithTransaction() throws Exception {
+		withTransaction(() -> {});
+	}
 	
 
 	
@@ -68,47 +80,120 @@ public class testDB  extends AbstractPersistenceTest implements WithGlobalEntity
 
 	}	
 	
+	@Test
+	public void persistsDimensionArticulo() {
+		EntityManager entityManager = PerThreadEntityManagers.getEntityManager();
+		DimensionArticulo dimensionJabon = new DimensionArticulo(10.2, 11.5, 123.0);
+		
+		EntityTransaction tx = entityManager.getTransaction();
+		
+		tx.rollback();
+		
+		tx.begin();
+		
+		entityManager.persist(dimensionJabon);
+		
+		tx.commit();
+		
+		DimensionArticulo encontrado = entityManager.find(DimensionArticulo.class, dimensionJabon.getId());
+		
+		assertEquals(dimensionJabon, encontrado);
+		
+		entityManager.clear();
+		PerThreadEntityManagers.closeEntityManager();
+	}
 	
 	@Test
-	public void testSeObtienenLosEnvases() throws Exception {
-		assertTrue(planificador.consultarEnvasesDisponibles(jabonDeAcero) == envasesJabon);
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void testSeIngresaMalLaPeriodicidad() throws Exception {
-		pedidoDePepe.setPeriodicidad("todas las semanas");
+	public void persistsClienteQueTodaviaNoHizoPedido() {
+		EntityManager entityManager = PerThreadEntityManagers.getEntityManager();
+		Cliente clienteX = new Cliente("Pepin");
+		
+		EntityTransaction tx = entityManager.getTransaction();
+		
+		tx.rollback();
+		
+		tx.begin();
+		
+		entityManager.persist(clienteX);
+		
+		tx.commit();
+		
+		Cliente encontrado = entityManager.find(Cliente.class, clienteX.getUserID());
+		
+		assertEquals(clienteX, encontrado);
+		assertEquals(encontrado.getName(), "Pepin");
+		
+		entityManager.clear();
+		PerThreadEntityManagers.closeEntityManager();
 	}
 	
 	@Test
-	public void testElSistemaRetieneLosPedidos() throws Exception {
-		planificador.hacerPedido(pedidoDePepe);
-		planificador.hacerPedido(pedidoDePepita);
+	public void persistsEnvases() {
+		EntityManager entityManager = PerThreadEntityManagers.getEntityManager();
 		
-		assertEquals(2, planificador.getPedidosRecibidos().size());
-		assertEquals(pedidoDePepe, planificador.getPedidosRecibidos().get(0));
-		assertEquals(pedidoDePepita, planificador.getPedidosRecibidos().get(1));
+		EntityTransaction tx = entityManager.getTransaction();
+		
+		tx.rollback();
+		
+		tx.begin();
+		
+		envasesJabon.forEach(envase -> entityManager.persist(envase));
+		
+		tx.commit();
+		
+		envasesJabon.forEach(envaseJabon -> {
+			assertEquals(envaseJabon, entityManager.find(Envase.class, envaseJabon.getId()));
+		});
+		
+		entityManager.clear();
+		PerThreadEntityManagers.closeEntityManager();
 	}
-	
-	@Test(expected=IllegalComponentStateException.class)
-	public void testExcepcionPorNoDefinirFechaInicial() throws Exception {
-		pedidoDePepe.agregarArticulo(jabonDeAcero)
-					.agregarArticulo(metalAnguloso)
-					.setPeriodicidad("mensual");
-	}
-	
 	
 	@Test
-	public void testElSistemaAsignaElIDAlPedido() throws Exception {
-		pedidoDePepe.agregarArticulo(jabonDeAcero)
-					.agregarArticulo(metalAnguloso)
-					.setFechaDePrimeraEntrega(LocalDateTime.now().plusDays(2))
-					.setPeriodicidad("mensual")
-					.setTotalDeEntregasARealizar(4);
+	public void persistsFechaEntrega() {
+		EntityManager entityManager = PerThreadEntityManagers.getEntityManager();
+		Envase envaseRequeridoParaLaFechaX = new Envase(30);
+		FechaEntrega fechaX = new FechaEntrega(envaseRequeridoParaLaFechaX, LocalDateTime.now());
 		
-		assertEquals(0,pedidoDePepe.getIDPedido());
 		
-		int idPedido = planificador.hacerPedido(pedidoDePepe);
+		EntityTransaction tx = entityManager.getTransaction();
 		
-		assertTrue(idPedido == pedidoDePepe.getIDPedido());
+		tx.rollback();
+		
+		tx.begin();
+		
+		entityManager.persist(envaseRequeridoParaLaFechaX);
+		entityManager.persist(fechaX);
+		
+		tx.commit();
+		
+		assertEquals(fechaX, entityManager.find(FechaEntrega.class, fechaX.getId()));
+		
+		entityManager.clear();
+		PerThreadEntityManagers.closeEntityManager();
 	}
+	
+	//@Test
+	public void getArticulo() {
+		EntityManager entityManager = PerThreadEntityManagers.getEntityManager();
+		Articulo jabonDeAcero = new ArticuloStock("Jabon de Acero", dimensionJabon, envasesJabon);
+		
+		EntityTransaction tx = entityManager.getTransaction();
+		
+		tx.rollback();
+		
+		tx.begin();
+		
+		entityManager.persist(jabonDeAcero);
+		
+		tx.commit();
+		
+		Articulo articuloObtenido = entityManager.find(Articulo.class, jabonDeAcero.getId());
+		assertEquals(articuloObtenido.getId(), jabonDeAcero.getId());
+
+		entityManager.clear();
+		PerThreadEntityManagers.closeEntityManager();
+		
+	}
+
 }

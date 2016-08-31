@@ -1,11 +1,9 @@
 package Clases;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,13 +13,21 @@ public class Cliente {
 	@Id @GeneratedValue
 	private int idCliente;
 	
+	private String nombreCliente;
+	
+	@OneToOne
 	private Pedido pedidoRealizado;
 	
 	@SuppressWarnings("unused")
 	private Cliente() {};
 	
 	public Cliente(int id) {
+		// Para tests sin db
 		this.idCliente = id;
+	}
+	
+	public Cliente(String nombre) {
+		this.nombreCliente = nombre;
 	}
 	
 	public void hacerPedido(Pedido pedido) {
@@ -35,6 +41,10 @@ public class Cliente {
 	
 	public int getUserID() {
 		return this.idCliente;
+	}
+
+	public String getName() {
+		return this.nombreCliente;
 	}
 
 }

@@ -3,10 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 public class DimensionArticulo {
+	
+	@Id @GeneratedValue
+	private int id;
 	
 	private Double diametro;
 	private Double largo;
@@ -27,6 +32,10 @@ public class DimensionArticulo {
 		lista.add(ancho);
 		return lista;
 		
+	}
+
+	public int getId() {
+		return this.id;
 	}
 
 }

@@ -6,8 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
-@Table( name = "articulos_solicitados")
+
 public class ArticuloSolicitado extends Articulo{
 	
 	@OneToOne

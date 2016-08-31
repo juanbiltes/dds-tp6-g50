@@ -5,12 +5,32 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table
 public class FechasDeEntrega {
 	
+	@Id @GeneratedValue
+	private int id;
 	
+	@Transient
 	private FechaEntrega fechaInicial = null;
-	private List<FechaEntrega> fechasDeEntrega = new ArrayList<FechaEntrega>();
+	
+	@OneToMany
+	private List<FechaEntrega> fechasDeEntrega = new ArrayList<>();
 	
 	
 	public FechasDeEntrega() {};

@@ -8,9 +8,15 @@
     <persistence-unit name="db" transaction-type="RESOURCE_LOCAL">
     	<provider>org.hibernate.ejb.HibernatePersistence</provider>
     	
-    	<class> jacklow.model.Vehiculo</class>
-    	<class> jacklow.model.Robo</class>
-    	
+    	<class> /TP6_Acero/src/Clases/Articulo </class>
+    	<class> /TP6_Acero/src/Clases/ArticuloSolicitado </class>
+    	<class> /TP6_Acero/src/Clases/ArticuloStock </class>
+    	<class> /TP6_Acero/src/Clases/Cliente </class>
+    	<class> /TP6_Acero/src/Clases/DimensionArticulo </class>
+    	<class> /TP6_Acero/src/Clases/Envase </class>
+    	<class> /TP6_Acero/src/Clases/FechaEntrega </class>
+    	<class> /TP6_Acero/src/Clases/FechasDeEntrega </class>
+    	<class> /TP6_Acero/src/Clases/Pedido </class> 	
     	 
         <properties> 
 	    <property name="hibernate.archive.autodetection" value="class"/>        

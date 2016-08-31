@@ -2,6 +2,7 @@ package Clases;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,13 +13,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="articulos")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-
+@Table( name = "articulos")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Articulo {
 	
 	@Id @GeneratedValue
 	private int idArticulo;
+	
+	@Embedded
+	private List<Envase> envasesDisponibles = new ArrayList<Envase>();
 	
 	private String tipoArticulo; // Seria el nombre...
 	
@@ -33,12 +36,26 @@ public class Articulo {
 	}
 	
 	
+	public Articulo(String tipoArt, DimensionArticulo dimension, List<Envase> envasesDisponibles) {
+		this.tipoArticulo = tipoArt;
+		this.dimensionArticulo = dimension;
+		this.envasesDisponibles = envasesDisponibles;
+	}
+
 	protected void setId(int id) {
 		this.idArticulo = id;
 	}
 
+	public int getId() {
+		return this.idArticulo;
+	}
+	
+	public void add(Envase envase) {
+		this.envasesDisponibles.add(envase);
+	}
+	
 	public List<Envase> getEnvasesDisponibles() {
-		return null;
+		return envasesDisponibles;
 	}
 
 		

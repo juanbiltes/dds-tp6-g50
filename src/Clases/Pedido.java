@@ -6,7 +6,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,14 +16,16 @@ import javax.persistence.Table;
 public class Pedido {
 	
 	@Id @GeneratedValue
-	private int idPedido = 0;
+	private int idPedido;
 	
+	@OneToOne
 	private FechasDeEntrega fechasEntregas = new FechasDeEntrega();
 
-	private int totalDeEntregasARealizar;
+	private int totalDeEntregasARealizar = 0;
 	
 	private String periodicidad;
 	
+	@OneToMany
 	private List<Articulo> articulosSolicitados = new ArrayList<Articulo>();
 	
 	public Pedido setFechaDePrimeraEntrega(LocalDateTime fechaIndicadaPorUsuario) {

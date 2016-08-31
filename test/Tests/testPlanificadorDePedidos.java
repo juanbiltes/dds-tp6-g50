@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Clases.Articulo;
-import Clases.ArticuloStock;
 import Clases.Cliente;
 import Clases.DimensionArticulo;
 import Clases.Envase;
@@ -49,8 +48,8 @@ public class testPlanificadorDePedidos {
 		envasesMetalAnguloso.add(new Envase(300));
 		envasesMetalAnguloso.add(new Envase(400));
 		
-		jabonDeAcero = new ArticuloStock("Jabon de Acero", dimensionJabon, envasesJabon);
-		metalAnguloso = new ArticuloStock("Metal Anguloso", dimensionJabon, envasesJabon);
+		jabonDeAcero = new Articulo("Jabon de Acero", dimensionJabon, envasesJabon);
+		metalAnguloso = new Articulo("Metal Anguloso", dimensionJabon, envasesJabon);
 		
 		planificador.agregarArticuloAStock(jabonDeAcero);
 		planificador.agregarArticuloAStock(metalAnguloso);
