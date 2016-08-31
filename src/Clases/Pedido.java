@@ -1,4 +1,5 @@
 package Clases;
+import java.awt.IllegalComponentStateException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "pedido")
@@ -18,8 +20,11 @@ public class Pedido {
 	@Id @GeneratedValue
 	private int idPedido;
 	
+	@Transient
+	private FechaEntrega fechaInicial = null;
+	
 	@OneToOne
-	private FechasDeEntrega fechasEntregas = new FechasDeEntrega();
+	List<FechaEntrega> fechasDeEntrega = new ArrayList<>();
 
 	private int totalDeEntregasARealizar = 0;
 	
@@ -29,7 +34,7 @@ public class Pedido {
 	private List<Articulo> articulosSolicitados = new ArrayList<Articulo>();
 	
 	public Pedido setFechaDePrimeraEntrega(LocalDateTime fechaIndicadaPorUsuario) {
-		this.fechasEntregas.setFechaInicial(fechaIndicadaPorUsuario);
+		this.fechaInicial = new FechaEntrega(fechaIndicadaPorUsuario);
 		return this;
 	}
 	
@@ -44,15 +49,15 @@ public class Pedido {
 		switch (periodicidad) {
 		case "unico":
 			this.periodicidad = periodicidad;
-			fechasEntregas.unicaEntrega();
+			this.unicaEntrega();
 			break;
 		case "semanal":
 			this.periodicidad = periodicidad;
-			fechasEntregas.entregasSemanales(totalEntregasARealizar);
+			this.entregasSemanales(totalEntregasARealizar);
 			break;
 		case "mensual":
 			this.periodicidad = periodicidad;
-			fechasEntregas.entregasMensuales(totalEntregasARealizar);
+			this.entregasMensuales(totalEntregasARealizar);
 			break;
 		default:
 			throw new IllegalArgumentException("Periodicidad Invalida, opciones: unico, semanal o mensual");
@@ -77,6 +82,43 @@ public class Pedido {
 
 	public void setID(int idIndicadoPorElPlanificador) {
 		this.idPedido = idIndicadoPorElPlanificador;
+	}
+	
+	
+
+
+	
+	
+	
+	public void setFechaInicial(LocalDateTime fecha) {
+		this.fechaInicial = new FechaEntrega(fecha);
+	}
+	
+	private void checkFechaInicial() {
+		if (this.fechaInicial == null) {
+			throw new IllegalComponentStateException("Por favor, indique primero una fecha inicial");
+		}
+	}
+
+	public void unicaEntrega() {
+		this.checkFechaInicial();
+		this.fechasDeEntrega.add(fechaInicial);
+	}
+
+	public void entregasSemanales(int cantEntregas) {
+		this.checkFechaInicial();
+		this.fechasDeEntrega.add(fechaInicial);
+		for (int i = 0; i < cantEntregas; i++) {
+			fechasDeEntrega.add(fechaInicial.plusDays(7));
+		}
+	}
+
+	public void entregasMensuales(int cantEntregas) {
+		this.checkFechaInicial();
+		this.fechasDeEntrega.add(fechaInicial);
+		for (int i = 0; i < cantEntregas; i++) {
+			fechasDeEntrega.add(fechaInicial.plusMonths(1));
+		}
 	}
 	
 }

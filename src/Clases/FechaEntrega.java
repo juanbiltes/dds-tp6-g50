@@ -1,5 +1,6 @@
 package Clases;
 
+import java.awt.IllegalComponentStateException;
 import java.time.LocalDateTime;
 
 import javax.persistence.Embeddable;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -51,6 +53,14 @@ public class FechaEntrega {
 	public int getId() {
 		return this.getId();
 	}
+	
+	
+	////////////
+	////////////
+	////////////
+
+	
+
 	
 
 }
