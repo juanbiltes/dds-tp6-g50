@@ -69,7 +69,7 @@ public class testDB  extends AbstractPersistenceTest implements WithGlobalEntity
 		envasesMetalAnguloso.add(new Envase(400));
 		
 		jabonDeAcero = new Articulo("Jabon de Acero", dimensionJabon, envasesJabon);
-		metalAnguloso = new Articulo("Metal Anguloso", dimensionJabon, envasesJabon);
+		metalAnguloso = new Articulo("Metal Anguloso", dimensionJabon, envasesMetalAnguloso);
 		
 		planificador.agregarArticuloAStock(jabonDeAcero);
 		planificador.agregarArticuloAStock(metalAnguloso);
