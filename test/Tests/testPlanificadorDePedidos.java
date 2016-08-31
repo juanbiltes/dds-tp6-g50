@@ -49,7 +49,7 @@ public class testPlanificadorDePedidos {
 		envasesMetalAnguloso.add(new Envase(400));
 		
 		jabonDeAcero = new Articulo("Jabon de Acero", dimensionJabon, envasesJabon);
-		metalAnguloso = new Articulo("Metal Anguloso", dimensionJabon, envasesJabon);
+		metalAnguloso = new Articulo("Metal Anguloso", dimensionJabon, envasesMetalAnguloso);
 		
 		planificador.agregarArticuloAStock(jabonDeAcero);
 		planificador.agregarArticuloAStock(metalAnguloso);
@@ -82,16 +82,23 @@ public class testPlanificadorDePedidos {
 	
 	@Test(expected=IllegalComponentStateException.class)
 	public void testExcepcionPorNoDefinirFechaInicial() throws Exception {
-		pedidoDePepe.agregarArticulo(jabonDeAcero)
-					.agregarArticulo(metalAnguloso)
+		pedidoDePepe.agregarArticulo(jabonDeAcero, envasesJabon.get(0))
+					.agregarArticulo(metalAnguloso, envasesMetalAnguloso.get(0))
 					.setPeriodicidad("mensual");
 	}
 	
+	@Test(expected=IllegalArgumentException.class)
+	public void testSeAgregaUnArticuloConUnEnvaseInvalido() throws Exception {
+		pedidoDePepe.agregarArticulo(jabonDeAcero, new Envase(400))
+					.setFechaDePrimeraEntrega(LocalDateTime.now().plusDays(2))
+					.setPeriodicidad("mensual")
+					.setTotalDeEntregasARealizar(4);
+	}
 	
 	@Test
 	public void testElSistemaAsignaElIDAlPedido() throws Exception {
-		pedidoDePepe.agregarArticulo(jabonDeAcero)
-					.agregarArticulo(metalAnguloso)
+		pedidoDePepe.agregarArticulo(jabonDeAcero, envasesJabon.get(0))
+					.agregarArticulo(metalAnguloso, envasesMetalAnguloso.get(0))
 					.setFechaDePrimeraEntrega(LocalDateTime.now().plusDays(2))
 					.setPeriodicidad("mensual")
 					.setTotalDeEntregasARealizar(4);

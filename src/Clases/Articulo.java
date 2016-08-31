@@ -41,6 +41,11 @@ public class Articulo {
 		this.dimensionArticulo = dimension;
 		this.envasesDisponibles = envasesDisponibles;
 	}
+	
+	public boolean tieneEnvase(Envase envase) {
+		return this.envasesDisponibles.contains(envase);
+	}
+	
 
 	protected void setId(int id) {
 		this.idArticulo = id;
@@ -57,6 +62,16 @@ public class Articulo {
 	public List<Envase> getEnvasesDisponibles() {
 		return envasesDisponibles;
 	}
+
+	public String getTipoDeArticulo() {
+		return this.tipoArticulo;
+	}
+
+	public DimensionArticulo getDimensiones() {
+		return this.dimensionArticulo;
+	}
+	
+	
 
 		
 }

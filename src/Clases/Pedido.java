@@ -32,7 +32,7 @@ public class Pedido {
 	private String periodicidad;
 	
 	@OneToMany
-	private List<Articulo> articulosSolicitados = new ArrayList<Articulo>();
+	private List<ArticuloSolicitado> articulosSolicitados = new ArrayList<ArticuloSolicitado>();
 	
 	public Pedido setFechaDePrimeraEntrega(LocalDateTime fechaIndicadaPorUsuario) {
 		this.fechaInicial = new FechaEntrega(fechaIndicadaPorUsuario);
@@ -66,33 +66,15 @@ public class Pedido {
 		return this;
 	}
 	
-	public Pedido agregarArticulo(Articulo articuloIndicadoPorUsuario) {
-		this.articulosSolicitados.add(articuloIndicadoPorUsuario);
+	public Pedido agregarArticulo(Articulo articuloIndicadoPorUsuario, Envase envaseArticulo) {
+		if(articuloIndicadoPorUsuario.tieneEnvase(envaseArticulo)) {
+		ArticuloSolicitado articuloSolicitado = new ArticuloSolicitado(articuloIndicadoPorUsuario);
+		articuloSolicitado.seleccionarEnvase(envaseArticulo);
+		this.articulosSolicitados.add(articuloSolicitado);
 		return this;
-	}
-	
-	public int getIDPedido() {
-		return this.idPedido;
-	}
-	
-	// Setters & getters
-	
-	public String getPeriodicidad() {
-		return this.periodicidad;
-	}
-
-	public void setID(int idIndicadoPorElPlanificador) {
-		this.idPedido = idIndicadoPorElPlanificador;
-	}
-	
-	
-
-
-	
-	
-	
-	public void setFechaInicial(LocalDateTime fecha) {
-		this.fechaInicial = new FechaEntrega(fecha);
+		} else {
+			throw new IllegalArgumentException("Este articulo no viene en el envase seleccionado");
+		}
 	}
 	
 	private void checkFechaInicial() {
@@ -121,5 +103,27 @@ public class Pedido {
 			fechasDeEntrega.add(fechaInicial.plusMonths(1));
 		}
 	}
+	
+
+	// Setters & getters
+	
+	public int getIDPedido() {
+		return this.idPedido;
+	}
+	
+	
+	public String getPeriodicidad() {
+		return this.periodicidad;
+	}
+
+	public void setID(int idIndicadoPorElPlanificador) {
+		this.idPedido = idIndicadoPorElPlanificador;
+	}
+	
+	
+	public void setFechaInicial(LocalDateTime fecha) {
+		this.fechaInicial = new FechaEntrega(fecha);
+	}
+	
 	
 }

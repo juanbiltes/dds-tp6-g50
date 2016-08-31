@@ -18,6 +18,10 @@ public class ArticuloSolicitado extends Articulo{
 		super();
 	}
 	
+	public ArticuloSolicitado(Articulo art) {
+		super(art.getTipoDeArticulo(), art.getDimensiones());
+	}
+	
 	public ArticuloSolicitado(String tipoArticulo, DimensionArticulo dimensiones) {
 		super(tipoArticulo, dimensiones);
 	}
