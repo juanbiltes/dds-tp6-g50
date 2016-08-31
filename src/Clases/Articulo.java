@@ -46,6 +46,9 @@ public class Articulo {
 		return this.envasesDisponibles.contains(envase);
 	}
 	
+	public boolean dimensionesMenoresQue(DimensionArticulo dimensionesTolerables) {
+		return this.dimensionArticulo.esMenorQue(dimensionesTolerables);
+	}
 
 	protected void setId(int id) {
 		this.idArticulo = id;

@@ -77,7 +77,7 @@ public class Pedido {
 	public Pedido agregarArticulo(Articulo articuloIndicadoPorUsuario, Envase envaseArticulo) {
 		if(this.dimensionesTolerables == null) throw new IllegalStateException("Por favor, primero indique las dimensiones maximas que tolerara para las entregas");
 		if(articuloIndicadoPorUsuario.tieneEnvase(envaseArticulo)) {
-			if(!articuloIndicadoPorUsuario.getDimensiones().esMenorQue(this.dimensionesTolerables)) throw new IllegalArgumentException("Las dimensiones del articulo elegido exceden las que se han elegido como tolerables");
+			if(!articuloIndicadoPorUsuario.dimensionesMenoresQue(this.dimensionesTolerables)) throw new IllegalArgumentException("Las dimensiones del articulo elegido exceden las que se han elegido como tolerables");
 			ArticuloSolicitado articuloSolicitado = new ArticuloSolicitado(articuloIndicadoPorUsuario);
 			articuloSolicitado.seleccionarEnvase(envaseArticulo);
 			this.articulosSolicitados.add(articuloSolicitado);
